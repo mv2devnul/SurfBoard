@@ -1,3 +1,6 @@
+;;; -*- Mode: Lisp;  show-trailing-whitespace: t; Base: 10; indent-tabs: nil; Syntax: ANSI-Common-Lisp; Package: CL-USER; -*-
+;;; Copyright (c) 2013, Mark VandenBrink. All rights reserved.
+
 (defparameter *modem-status* "http://192.168.100.1/indexData.htm")
 (defparameter *modem-stats*  "http://192.168.100.1/cmSignalData.htm")
 (defparameter *modem-logs*   "http://192.168.100.1/cmLogsData.htm")
