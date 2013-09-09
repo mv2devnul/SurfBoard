@@ -57,7 +57,7 @@
   "returns a string with year-month-day-hour-minute-second"
   (multiple-value-bind (second minute hour date month year day daylight-p zone) (get-decoded-time)
     (declare (ignore zone daylight-p date))
-    (format nil "~a-~a-~a-~a-~a-~a" year month day hour minute second)))
+    (format nil "~4d-~2,'0d-~2,'0d-~2,'0d-~2,'0d-~2,'0d" year month day hour minute second)))
 
 (defun write-header-line (stream)
   (fare-csv:write-csv-line '("Timestamp"
@@ -97,26 +97,63 @@
       (push (table-row-value e) s))
     (fare-csv:write-csv-line (nreverse s) stream)))
 
-(defun watch-modem (log-name &optional (interval (* 5 60)))
+(defparameter *last-log* nil)
+
+(defun log-row-equal (a b)
+  (and (string= (log-row-time a) (log-row-time b))
+       (string= (log-row-priority a) (log-row-priority b))
+       (string= (log-row-code a) (log-row-code b))
+       (string= (log-row-message a) (log-row-message b))))
+
+(defun process-modem-log (log f)
+  (let ((ts (get-timestamp-string)))
+    (when (null *last-log*)
+      (fare-csv:write-csv-line '(Real-time Time Priority Code Message) f)
+      (dolist (l log)
+        (fare-csv:write-csv-line (list ts
+                                       (log-row-time l)
+                                       (log-row-priority l)
+                                       (log-row-code l)
+                                       (log-row-message l)) f))
+      (setf *last-log* log)
+      (return-from process-modem-log t))
+
+    (when (not (log-row-equal (first log) (first *last-log*)))
+      (block move-old
+        (dolist (l log)
+          (if (not (log-row-equal l (first *last-log*)))
+              (fare-csv:write-csv-line (list ts
+                                             (log-row-time l)
+                                             (log-row-priority l)
+                                             (log-row-code l)
+                                             (log-row-message l)) f)
+              (return-from move-old t))))
+      (setf *last-log* log))))
+
+(defun watch-modem (&optional (log-name "modem") (interval 60))
+  (setf *last-log* nil)
   (format t "Writing to ~a at ~:d interval~%" log-name interval)
   (let ((count 0)
-        (f (open log-name :direction :output :if-does-not-exist :create :if-exists :rename)))
+        (ml  (open (format nil "~a-log.csv" log-name) :direction :output :if-does-not-exist :create :if-exists :rename))
+        (err (open (format nil "~a.errs" log-name)    :direction :output :if-does-not-exist :create :if-exists :rename))
+        (f   (open (format nil "~a.csv" log-name)     :direction :output :if-does-not-exist :create :if-exists :rename)))
     (unwind-protect
          (progn
            (write-header-line f)
            (loop
              (format t "Starting iteration ~:d~%" (incf count))
              (handler-case
-                 (let* (
-                        ;;(modem-log (get-modem-log))
+                 (let* ((modem-log (get-modem-log))
                         (modem-stats (get-modem-stats))
                         (modem-status (get-modem-status)))
-                                        ;(format t "Log: ~a~%" modem-log)
-                                        ;(format t "Stats: ~a~%" modem-stats)
-                                        ;(format t "Status: ~a~%" modem-status)
                    (write-table-line f modem-status modem-stats)
+                   (process-modem-log modem-log ml)
+                   (finish-output ml)
+                   (finish-output err)
                    (finish-output f))
                (condition (c)
-                 (warn "At ~a, got condition: <~a>" (get-timestamp-string) c)))
+                 (format err "At ~a, got condition: <~a>~%" (get-timestamp-string) c)))
              (sleep interval)))
-      (when f (finish-output f) (close f)))))
+      (when f (finish-output f) (close f))
+      (when err (finish-output err) (close err))
+      (when ml (finish-output ml) (close ml)))))
