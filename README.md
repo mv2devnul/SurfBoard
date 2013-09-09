@@ -37,8 +37,9 @@ None. No, really. Just a hack.
 * __surfboard.lisp:__ opens HTTP requests to modem, collects data, then writes a CSV file. Uses optima and cl-ppcre to hack up the HTML. Fugly code.
   BTW, the process-modem-log is most probably buggy.
 * __watch-modem.sh:__ a shell script that runs the watcher. Use this to run the program from the command line to collect data.
-* __report.lisp:__ template for creating modem reports.  The only one instantiated here is creating a data file to gnuplot that graphs power-levels
-* __power.gp:__ a shell script that invokes gnuplot to plot the power& SNR levels
+* __report.lisp:__ template for creating modem reports.  The only one instantiated here is creating a data file to gnuplot that graphs power-levels.
+* __power.gp:__ a shell script that invokes gnuplot to plot the power& SNR levels.
+* __plot-power.sh:__ quick script to run the modem log and gnuplot the results.
 
 ### Sample Invocation
 
