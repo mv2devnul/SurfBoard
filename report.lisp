@@ -66,15 +66,27 @@
       (fare-csv:with-strict-rfc4180-csv-syntax ()
         (funcall func (make-modem-record line))))))
 
+;; (defun report-power-levels (in-name out-name)
+;;   (let ((pattern (cl-ppcre:create-scanner " dBmV")))
+;;     (with-open-file (out out-name :direction :output)
+;;       (write-line "##Time,Downstream Power,Upstream Power" out)
 
-(defun report-power-levels (in-name out-name)
-  (let ((pattern (cl-ppcre:create-scanner " dBmV")))
+;;       (map-log-file in-name
+;;                     (lambda (l)
+;;                       (fare-csv:write-csv-line (list (modem-log-record-current-time-and-date l)
+;;                                                      (cl-ppcre:regex-replace pattern (modem-log-record-downstream-power-level l) "")
+;;                                                      (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) ""))
+;;                                                out))))))
+
+(defun report-levels (in-name out-name)
+  (let ((pattern (cl-ppcre:create-scanner " dB.*$")))
     (with-open-file (out out-name :direction :output)
-      (write-line "##Time,Downstream Power,Upstream Power" out)
+      (write-line "##Time,Downstream Power,Upstream Power,Downstream SNR" out)
 
       (map-log-file in-name
                     (lambda (l)
                       (fare-csv:write-csv-line (list (modem-log-record-current-time-and-date l)
                                                      (cl-ppcre:regex-replace pattern (modem-log-record-downstream-power-level l) "")
-                                                     (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) ""))
+                                                     (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) "")
+                                                     (cl-ppcre:regex-replace pattern (modem-log-record-downstream-signal-to-noise-ratio l) ""))
                                                out))))))

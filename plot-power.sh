@@ -10,7 +10,7 @@ if [ -f "$2.svg" ]; then
     exit 2
 fi
 
-ccl64 -e '(quicklisp:quickload "surfboard")' -e "(report-power-levels \"$1\" \"$2\")" -e "(quit)"
+ccl64 -e '(quicklisp:quickload "surfboard")' -e "(report-levels \"$1\" \"$2\")" -e "(quit)"
 ./power.gp "$2" > "$2.svg"
 xdg-open "$2.svg"
 

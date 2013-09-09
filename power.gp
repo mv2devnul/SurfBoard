@@ -21,6 +21,7 @@ set style data linespoints
 set datafile separator ","
 
 plot "$1" using 1:2 title "Downstream Power", \
-"" using 1:3 title "Upstream Power"
+"" using 1:3 title "Upstream Power", \
+"" using 1:4 title "Downstream SNR"
 
 EOD

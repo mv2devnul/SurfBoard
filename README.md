@@ -38,13 +38,14 @@ None. No, really. Just a hack.
   BTW, the process-modem-log is most probably buggy.
 * __watch-modem.sh:__ a shell script that runs the watcher. Use this to run the program from the command line to collect data.
 * __report.lisp:__ template for creating modem reports.  The only one instantiated here is creating a data file to gnuplot that graphs power-levels
-* __power.gp:__ a shell script that invokes gnuplot to plot the power levels
+* __power.gp:__ a shell script that invokes gnuplot to plot the power& SNR levels
 
 ### Sample Invocation
 
 Assuming you have quicklisp set up and use CCL, you can launch watch-modem.sh to start the data collection.  After some period of time, you
-can load up report.lisp and run report-power-levels to create a data file that can be fed to power.gp.
+can load up report.lisp and run report-levels to create a data file that can be fed to power.gp.
 
-Here is a sample of gnuplot:
+Here is a [sample of gnuplot ouput]:(https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png "Sample output")
 
-[Click here](https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png "Sample output")
+See [This page](http://www.dslreports.com/faq/3412) for info on how to interpret the plot.
+
