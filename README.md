@@ -46,7 +46,7 @@ None. No, really. Just a hack.
 Assuming you have quicklisp set up and use CCL, you can launch watch-modem.sh to start the data collection.  After some period of time, you
 can load up report.lisp and run report-levels to create a data file that can be fed to power.gp.
 
-Here is a [sample of gnuplot ouput]:(https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png "Sample output")
+Here is a [sample of gnuplot ouput](https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png)
 
-See [This page](http://www.dslreports.com/faq/3412) for info on how to interpret the plot.
+See [this page](http://www.dslreports.com/faq/3412) for info on how to interpret the plot.
 
