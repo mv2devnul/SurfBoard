@@ -81,7 +81,7 @@
                              "Upstream Ranging Service ID"
                              "Upstream Symbol Rate"
                              "Upstream Power Level"
-                             "Upstream Ranging Status "
+                             "Upstream Ranging Status"
                              "Signal Stats Channel ID"
                              "Signal Stats Total Unerrored Codewords"
                              "Signal Stats Total Correctable Codewords"
