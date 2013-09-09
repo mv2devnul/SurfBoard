@@ -4,6 +4,6 @@
   :description "Code to watch my cable modem and collect stats."
   :author "Mark VandenBrink"
   :license "Public Domain"
-  :depends-on (#:optima #:drakma #:closure-html #:closure-common #:fare-csv)
+  :depends-on (#:optima #:drakma #:closure-html #:closure-common #:fare-csv #:cl-ppcre)
   :components ((:file "surfboard")
-			   (:file "profile" :depends-on ("surfboard"))));;; taglib.asd
+			   (:file "report" :depends-on ("surfboard"))));;; taglib.asd
