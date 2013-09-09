@@ -47,4 +47,4 @@ can load up report.lisp and run report-power-levels to create a data file that c
 
 Here is a sample of gnuplot:
 
-[alt text](https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png "Sample output")
+[Click here](https://github.com/mv2devnul/SurfBoard/blob/master/SampleOutput.png "Sample output")
