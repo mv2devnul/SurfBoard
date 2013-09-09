@@ -5,8 +5,8 @@ fi
 
 gnuplot <<EOD
 reset
-#set terminal svg size 2048,768 dynamic background "#ffffff"
-set terminal png size 1024,768 background "#ffffff"
+set terminal svg size 2048,768 dynamic background "#ffffff"
+#set terminal png size 1024,768 background "#ffffff"
 
 set xdata time
 set timefmt "%b %d %Y %H:%M:%S"
