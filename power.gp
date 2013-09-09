@@ -5,10 +5,10 @@ fi
 
 gnuplot <<EOD
 reset
-set terminal svg size 1366,768 dynamic background "#ffffff"
+set terminal svg size 2048,768 dynamic background "#ffffff"
 
 set xdata time
-set timefmt "%m %d %Y %H:%M:%S"
+set timefmt "%b %d %Y %H:%M:%S"
 set format x "%m/%d:%H:%M"
 set xlabel "Time"
 
