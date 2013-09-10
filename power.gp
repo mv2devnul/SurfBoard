@@ -9,8 +9,9 @@ set terminal svg size 2048,768 dynamic background "#ffffff"
 #set terminal png size 1024,768 background "#ffffff"
 
 set xdata time
-set timefmt "%b %d %Y %H:%M:%S"
-set format x "%m/%d:%H:%M"
+#Keep this one around for old data sets: set timefmt "%b %d %Y %H:%M:%S"
+set timefmt "%Y-%m-%d-%H-%M-%S"
+set format x "%d:%H:%M"
 
 set xlabel "Time"
 set ylabel "Power Levels (dBmV)"

@@ -1,6 +1,8 @@
 ;;; -*- Mode: Lisp;  show-trailing-whitespace: t; Base: 10; indent-tabs: nil; Syntax: ANSI-Common-Lisp; Package: CL-USER; -*-
 ;;; Copyright (c) 2013, Mark VandenBrink. All rights reserved.
 
+;;; this could just as easily be done in awk/perl, but what the heck.
+
 (defstruct modem-log-record
   timestamp
   docsis-downstream-channel-acquisition
@@ -66,27 +68,15 @@
       (fare-csv:with-strict-rfc4180-csv-syntax ()
         (funcall func (make-modem-record line))))))
 
-;; (defun report-power-levels (in-name out-name)
-;;   (let ((pattern (cl-ppcre:create-scanner " dBmV")))
-;;     (with-open-file (out out-name :direction :output)
-;;       (write-line "##Time,Downstream Power,Upstream Power" out)
-
-;;       (map-log-file in-name
-;;                     (lambda (l)
-;;                       (fare-csv:write-csv-line (list (modem-log-record-current-time-and-date l)
-;;                                                      (cl-ppcre:regex-replace pattern (modem-log-record-downstream-power-level l) "")
-;;                                                      (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) ""))
-;;                                                out))))))
-
 (defun report-levels (in-name out-name)
   (let ((pattern (cl-ppcre:create-scanner " dB.*$")))
     (with-open-file (out out-name :direction :output)
       (write-line "##Time,Downstream Power,Upstream Power,Downstream SNR" out)
-
       (map-log-file in-name
                     (lambda (l)
-                      (fare-csv:write-csv-line (list (modem-log-record-current-time-and-date l)
-                                                     (cl-ppcre:regex-replace pattern (modem-log-record-downstream-power-level l) "")
-                                                     (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) "")
-                                                     (cl-ppcre:regex-replace pattern (modem-log-record-downstream-signal-to-noise-ratio l) ""))
+                      (fare-csv:write-csv-line (list ;(modem-log-record-current-time-and-date l)
+                                                (modem-log-record-timestamp l)
+                                                (cl-ppcre:regex-replace pattern (modem-log-record-downstream-power-level l) "")
+                                                (cl-ppcre:regex-replace pattern (modem-log-record-upstream-power-level l) "")
+                                                (cl-ppcre:regex-replace pattern (modem-log-record-downstream-signal-to-noise-ratio l) ""))
                                                out))))))
