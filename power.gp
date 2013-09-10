@@ -1,6 +1,6 @@
 if [ $# -ne 1 ]; then
-   echo "Must supply an input file"
-   exit 1
+    echo "Must supply one argument---an input file."
+    exit 1
 fi
 
 gnuplot <<EOD
@@ -11,18 +11,23 @@ set terminal svg size 2048,768 dynamic background "#ffffff"
 set xdata time
 set timefmt "%b %d %Y %H:%M:%S"
 set format x "%m/%d:%H:%M"
-set xlabel "Time"
 
-set ylabel "Power Levels"
+set xlabel "Time"
+set ylabel "Power Levels (dBmV)"
 
 set autoscale
 set grid
 
-set style data linespoints
+set style data lines
+set linetype 1 lc rgb "red" lw 2 pt 0
+set linetype 2 lc rgb "green" lw 2 pt 0
+set linetype 3 lc rgb "blue" lw 2 pt 0
+
 set datafile separator ","
 
-plot "$1" using 1:2 title "Downstream Power", \
-"" using 1:3 title "Upstream Power", \
-"" using 1:4 title "Downstream SNR"
+plot "$1" \
+using 1:2 title "Downstream Power (should be -15 -- +15)", \
+"" using 1:3 title "Upstream Power (should be 30 -- 55 with QAM256)", \
+"" using 1:4 title "Downstream SNR (>30)"
 
 EOD
