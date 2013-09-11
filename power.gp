@@ -3,8 +3,8 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-SAMPLES=`wc -l <"$1"`
-
+SAMPLES=$(wc -l <"$1")
+OUTAGES=$(grep '0,0,0,0,0' "$1" | wc -l)
 gnuplot <<EOD
 reset
 set terminal svg size 2048,768 dynamic background "#ffffff"
@@ -15,7 +15,7 @@ set xdata time
 set timefmt "%Y-%m-%d-%H-%M-%S"
 set format x "%d:%H:%M"
 
-set xlabel "Time ($SAMPLES samples)"
+set xlabel "Time ($SAMPLES samples, $OUTAGES outages)"
 set ylabel "Power Levels (dBmV)"
 
 set autoscale
@@ -29,8 +29,8 @@ set linetype 3 lc rgb "blue" lw 2 pt 0
 set datafile separator ","
 
 plot "$1" \
-using 1:2 title "Downstream Power (should be -15 -- +15)", \
-"" using 1:3 title "Upstream Power (should be 30 -- 55 with QAM256)", \
-"" using 1:4 title "Downstream SNR (should be >30)"
+using 1:16 title "Downstream Power (should be -15 -- +15)", \
+"$1" using 1:21 title "Upstream Power (should be 30 -- 55 with QAM256)", \
+"$1" using 1:14title "Downstream SNR (should be >30)"
 
 EOD
