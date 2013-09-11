@@ -3,6 +3,8 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
+SAMPLES=`wc -l <"$1"`
+
 gnuplot <<EOD
 reset
 set terminal svg size 2048,768 dynamic background "#ffffff"
@@ -13,7 +15,7 @@ set xdata time
 set timefmt "%Y-%m-%d-%H-%M-%S"
 set format x "%d:%H:%M"
 
-set xlabel "Time"
+set xlabel "Time ($SAMPLES samples)"
 set ylabel "Power Levels (dBmV)"
 
 set autoscale
