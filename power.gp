@@ -31,6 +31,6 @@ set datafile separator ","
 plot "$1" \
 using 1:2 title "Downstream Power (should be -15 -- +15)", \
 "" using 1:3 title "Upstream Power (should be 30 -- 55 with QAM256)", \
-"" using 1:4 title "Downstream SNR (>30)"
+"" using 1:4 title "Downstream SNR (should be >30)"
 
 EOD
