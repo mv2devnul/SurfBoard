@@ -5,6 +5,7 @@ fi
 
 SAMPLES=$(wc -l <"$1")
 OUTAGES=$(grep '0,0,0,0,0' "$1" | wc -l)
+RATIO=$(dc -e "2 k $OUTAGES $SAMPLES / p")
 gnuplot <<EOD
 reset
 set terminal svg size 2048,768 dynamic background "#ffffff"
@@ -15,7 +16,7 @@ set xdata time
 set timefmt "%Y-%m-%d-%H-%M-%S"
 set format x "%d:%H:%M"
 
-set xlabel "Time ($SAMPLES samples, $OUTAGES outages)"
+set xlabel "Time ($SAMPLES samples, $OUTAGES outages, ${RATIO}%)"
 set ylabel "Power Levels (dBmV)"
 
 set autoscale
