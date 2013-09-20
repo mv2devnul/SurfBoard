@@ -8,7 +8,8 @@ OUTAGES=$(grep '0,0,0,0,0' "$1" | wc -l)
 RATIO=$(dc -e "2 k $OUTAGES $SAMPLES / p")
 gnuplot <<EOD
 reset
-set terminal svg size 2048,768 dynamic background "#ffffff"
+set terminal wxt
+#set terminal svg size 2048,768 dynamic background "#ffffff"
 #set terminal png size 1024,768 background "#ffffff"
 
 set xdata time
